@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./providers/Authprovider";
 import { useContext } from "react";
 
@@ -6,8 +6,9 @@ import { useContext } from "react";
 
 const Login = () => {
 
-   const {signInUser} = useContext(AuthContext)
+   const {signInUser, signIngoogle} = useContext(AuthContext)
 
+   const navigate = useNavigate()
     const handleLogin = e =>{
         e.preventDefault();
         const email = e.target.email.value 
@@ -16,10 +17,24 @@ const Login = () => {
         signInUser(email,password)
         .then(result =>{
            console.log(result.user);
+           e.target.reset()
+           navigate('/')
         })
         .catch(error => {
            console.log(error.message);
         })
+      }
+
+      const handlegoogle = ()=>{
+         signIngoogle()
+         .then(result =>{
+          console.log(result.user);
+          navigate('/')
+       })
+       .catch(error => {
+          console.log(error.message);
+       })
+         
       }
 
     return (
@@ -55,6 +70,7 @@ const Login = () => {
         </div>
       </form>
       <p>New here? <Link to="/register"> <button className="btn btn-link">Register</button> </Link> </p>
+      <p> <button onClick={handlegoogle} className="btn btn-link">Google</button>  </p>
     </div>
   </div>
 </div>
